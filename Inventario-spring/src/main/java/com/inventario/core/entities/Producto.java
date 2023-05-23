@@ -23,6 +23,14 @@ public class Producto {
 	private byte[] imagen;
 
 	@ManyToOne
+	@JoinColumn(name = "color_id")
+	private Color color;
+
+	@ManyToOne
+	@JoinColumn(name = "talla_id")
+	private Talla talla;
+
+	@ManyToOne
 	@JoinColumn(name = "marca_id")
 	private Marca marca;
 
@@ -33,12 +41,12 @@ public class Producto {
 	@OneToMany(mappedBy = "producto")
 	private List<Existencia> existencias;
 
-	public Producto() {
-		super();
-	}
+	@OneToMany(mappedBy = "producto")
+	private List<Venta> ventas;
 
 	public Producto(Long id, String nombreProd, double precio, Date fechaCreacion, Date fechaActualiz, byte[] imagen,
-			Marca marca, Categoria categoria, List<Existencia> existencias) {
+			Color color, Talla talla, Marca marca, Categoria categoria, List<Existencia> existencias,
+			List<Venta> ventas) {
 		super();
 		this.id = id;
 		this.nombreProd = nombreProd;
@@ -46,9 +54,40 @@ public class Producto {
 		this.fechaCreacion = fechaCreacion;
 		this.fechaActualiz = fechaActualiz;
 		this.imagen = imagen;
+		this.color = color;
+		this.talla = talla;
 		this.marca = marca;
 		this.categoria = categoria;
 		this.existencias = existencias;
+		this.ventas = ventas;
+	}
+
+	public Producto() {
+		super();
+	}
+
+	public List<Venta> getVentas() {
+		return ventas;
+	}
+
+	public void setVentas(List<Venta> ventas) {
+		this.ventas = ventas;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Talla getTalla() {
+		return talla;
+	}
+
+	public void setTalla(Talla talla) {
+		this.talla = talla;
 	}
 
 	public Long getId() {

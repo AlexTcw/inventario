@@ -10,50 +10,60 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Color {
-	
-	  @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
-	    private String nombre;
-	    
-	    @OneToMany(mappedBy = "color")
-	    private List<Existencia> existencias;
 
-		public Color() {
-			super();
-		}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String nombre;
 
-		public Color(Long id, String nombre, List<Existencia> existencias) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-			this.existencias = existencias;
-		}
+	@OneToMany(mappedBy = "color")
+	private List<Existencia> existencias;
 
-		public Long getId() {
-			return id;
-		}
+	@OneToMany(mappedBy = "color")
+	private List<Producto> productos;
 
-		public void setId(Long id) {
-			this.id = id;
-		}
+	public Color(Long id, String nombre, List<Existencia> existencias, List<Producto> productos) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.existencias = existencias;
+		this.productos = productos;
+	}
 
-		public String getNombre() {
-			return nombre;
-		}
+	public Color() {
+		super();
+	}
 
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
+	public List<Producto> getProductos() {
+		return productos;
+	}
 
-		public List<Existencia> getExistencias() {
-			return existencias;
-		}
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
 
-		public void setExistencias(List<Existencia> existencias) {
-			this.existencias = existencias;
-		}
-	    
-	    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Existencia> getExistencias() {
+		return existencias;
+	}
+
+	public void setExistencias(List<Existencia> existencias) {
+		this.existencias = existencias;
+	}
 
 }
