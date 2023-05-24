@@ -1,4 +1,4 @@
-package com.inventario.core.service;
+package com.inventario.core.service.producto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +16,11 @@ public interface ProductoService {
 	Optional<Producto> findByIdProducto(Long id);
 
 	void deleteByIdProducto(Long id);
+
+	void init();
+
+	List<String> getTallasDisponiblesById(Long productId);
+
+	List<String> getTallasDisponiblesByName(String nombreProd);
 
 }
