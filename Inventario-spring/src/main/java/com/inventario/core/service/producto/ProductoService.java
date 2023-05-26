@@ -23,4 +23,6 @@ public interface ProductoService {
 
 	List<String> getTallasDisponiblesByName(String nombreProd);
 
+	List<String> getExistenciasByNombreAndColor(String nombreProd, String color);
+
 }

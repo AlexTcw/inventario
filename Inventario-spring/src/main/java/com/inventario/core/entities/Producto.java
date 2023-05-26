@@ -26,11 +26,9 @@ public class Producto {
 	private LocalDate fechaActualiz;
 	@ElementCollection
 	private List<String> tallasDisponibles;
+	@ElementCollection
+	private List<String> color;
 	private byte[] imagen;
-
-	@ManyToOne
-	@JoinColumn(name = "color_id")
-	private Color color;
 
 	@ManyToOne
 	@JoinColumn(name = "marca_id")
@@ -62,7 +60,7 @@ public class Producto {
 	}
 
 	public Producto(Long id, String nombreProd, double precio, LocalDate fechaCreacion, LocalDate fechaActualiz,
-			List<String> tallasDisponibles, byte[] imagen, Color color, Marca marca, Categoria categoria,
+			List<String> tallasDisponibles, List<String> color, byte[] imagen, Marca marca, Categoria categoria,
 			List<Existencia> existencias, List<Venta> ventas) {
 		super();
 		this.id = id;
@@ -71,8 +69,8 @@ public class Producto {
 		this.fechaCreacion = fechaCreacion;
 		this.fechaActualiz = fechaActualiz;
 		this.tallasDisponibles = tallasDisponibles;
-		this.imagen = imagen;
 		this.color = color;
+		this.imagen = imagen;
 		this.marca = marca;
 		this.categoria = categoria;
 		this.existencias = existencias;
@@ -127,20 +125,20 @@ public class Producto {
 		this.tallasDisponibles = tallasDisponibles;
 	}
 
+	public List<String> getColor() {
+		return color;
+	}
+
+	public void setColor(List<String> color) {
+		this.color = color;
+	}
+
 	public byte[] getImagen() {
 		return imagen;
 	}
 
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public Marca getMarca() {

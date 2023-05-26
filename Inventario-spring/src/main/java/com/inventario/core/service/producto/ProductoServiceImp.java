@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inventario.core.entities.Producto;
 import com.inventario.core.repositories.ProductoRepository;
@@ -18,7 +19,6 @@ public class ProductoServiceImp implements ProductoService {
 
 	@Autowired
 	ProductoRepository productoRepository;
-
 
 	@Override
 	public Producto saveOrProducto(Producto producto) {
@@ -44,33 +44,46 @@ public class ProductoServiceImp implements ProductoService {
 	public void deleteByIdProducto(Long id) {
 		productoRepository.deleteById(id);
 	}
-	
+
 	@Override
 	public List<String> getTallasDisponiblesById(Long productId) {
-	    Optional<Producto> productoOptional = productoRepository.findById(productId);
-	    if (productoOptional.isPresent()) {
-	        Producto producto = productoOptional.get();
-	        return producto.getTallasDisponibles();
-	    }
-	    return Collections.emptyList(); // Si no se encuentra el producto, se devuelve una lista vacía
+		Optional<Producto> productoOptional = productoRepository.findById(productId);
+		if (productoOptional.isPresent()) {
+			Producto producto = productoOptional.get();
+			return producto.getTallasDisponibles();
+		}
+		return Collections.emptyList(); // Si no se encuentra el producto, se devuelve una lista vacía
+	}
+
+	@Override
+	public List<String> getTallasDisponiblesByName(String nombreProd) {
+		Optional<Producto> productoOptional = productoRepository.findByNombreProd(nombreProd);
+		if (productoOptional.isPresent()) {
+			Producto producto = productoOptional.get();
+			return producto.getTallasDisponibles();
+		}
+		return Collections.emptyList(); // Si no se encuentra el producto, se devuelve una lista vacía
 	}
 	
 	@Override
-	public List<String> getTallasDisponiblesByName(String nombreProd) {
-	    Optional<Producto> productoOptional = productoRepository.findByNombreProd(nombreProd);
-	    if (productoOptional.isPresent()) {
-	        Producto producto = productoOptional.get();
-	        return producto.getTallasDisponibles();
-	    }
-	    return Collections.emptyList(); // Si no se encuentra el producto, se devuelve una lista vacía
+	public List<String> getExistenciasByNombreAndColor(String nombreProd, String color){
+		if (nombreProd != null && color != null) {
+			return productoRepository.findByNombreProdAndColor(nombreProd,color);
+		}else {
+			return Collections.emptyList(); 
+		}
 	}
-
+	
 
 	@Override
 	@PostConstruct
+	@Transactional
 	public void init() {
+		ArrayList<String> colores = new ArrayList();
+		colores.add("rojo");
+		colores.add("Azul");
 		
-		ArrayList tallas = new ArrayList<>();
+		ArrayList<String> tallas = new ArrayList<>();
 		tallas.add("CH");
 		tallas.add("GR");
 		tallas.add("XL");
@@ -81,8 +94,13 @@ public class ProductoServiceImp implements ProductoService {
 		producto.setPrecio(280.0);
 		producto.addTallaDisponible("CH");
 		productoRepository.save(producto);
-		
-		Producto rev = new Producto(null, "Sudadera", 350.0, null, null, tallas, null, null, null, null, null, null);
+
+
+		Producto rev = new Producto();
+		rev.setNombreProd("Sudadera");
+		rev.setColor(colores);
+		rev.setPrecio(350.0);
+		rev.setTallasDisponibles(tallas);
 		productoRepository.save(rev);
 	}
 
