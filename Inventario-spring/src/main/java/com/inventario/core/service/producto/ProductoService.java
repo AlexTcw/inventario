@@ -1,6 +1,7 @@
 package com.inventario.core.service.producto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.inventario.core.entities.Producto;
@@ -23,6 +24,10 @@ public interface ProductoService {
 
 	List<String> getTallasDisponiblesByName(String nombreProd);
 
-	List<String> getExistenciasByNombreAndColor(String nombreProd, String color);
+	Map<String, Object> getExistenciasByNombreAndMarcaAndColor(String nombreProd, String marca, String color);
+
+	Map<String, Object> getExistenciasByNombreAndColor(String nombreProd, String color);
+
+	Map<String, Object> getExistenciasByNombreAndMarca(String nombreProd, String marca);
 
 }

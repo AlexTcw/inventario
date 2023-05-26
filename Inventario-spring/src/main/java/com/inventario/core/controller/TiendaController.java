@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class TiendaController {
 
-	@GetMapping("/")
+@GetMapping("/")
 	public String home() {
 		return "<!DOCTYPE html>\n" + "<html>\n" + "<head>\n" + "<meta charset=\"UTF-8\">\n"
 				+ "<title>Mi pagina</title>\n" + "<style>\n" + "    .center{\n" + "    display: flex;\n"

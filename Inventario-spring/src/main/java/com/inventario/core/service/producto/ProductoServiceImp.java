@@ -2,7 +2,9 @@ package com.inventario.core.service.producto;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,25 +66,54 @@ public class ProductoServiceImp implements ProductoService {
 		}
 		return Collections.emptyList(); // Si no se encuentra el producto, se devuelve una lista vacía
 	}
-	
+
 	@Override
-	public List<String> getExistenciasByNombreAndColor(String nombreProd, String color){
-		if (nombreProd != null && color != null) {
-			return productoRepository.findByNombreProdAndColor(nombreProd,color);
-		}else {
-			return Collections.emptyList(); 
-		}
+	public Map<String, Object> getExistenciasByNombreAndColor(String nombreProd, String color) {
+		List<Producto> productos = productoRepository.findByNombreProdAndColor(nombreProd, color);
+		int numeroProd = productos.size();
+		System.out.println("Total de productos: " + numeroProd);
+
+		// Crear objeto que contiene los resultados y el número total de productos
+		Map<String, Object> response = new HashMap<>();
+		response.put("productos", productos);
+		response.put("numeroTotalProductos", numeroProd);
+
+		return response;
 	}
-	
+
+	@Override
+	public Map<String, Object> getExistenciasByNombreAndMarca(String nombreProd, String marca) {
+		List<Producto> productos = productoRepository.findByNombreProdAndMarca(nombreProd, marca);
+		int numeroProd = productos.size();
+		System.out.println("Total de productos: " + numeroProd);
+
+		// Crear objeto que contiene los resultados y el número total de productos
+		Map<String, Object> response = new HashMap<>();
+		response.put("productos", productos);
+		response.put("numeroTotalProductos", numeroProd);
+
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> getExistenciasByNombreAndMarcaAndColor(String nombreProd, String marca, String color) {
+		List<Producto> productos = productoRepository.findByNombreProdAndMarcaAndColor(nombreProd, marca, color);
+		int numeroProd = productos.size();
+		System.out.println("Total de productos: " + numeroProd);
+
+		// Crear objeto que contiene los resultados y el número total de productos
+		Map<String, Object> response = new HashMap<>();
+		response.put("productos", productos);
+		response.put("numeroTotalProductos", numeroProd);
+
+		return response;
+	}
 
 	@Override
 	@PostConstruct
 	@Transactional
 	public void init() {
-		ArrayList<String> colores = new ArrayList();
-		colores.add("rojo");
-		colores.add("Azul");
-		
+
 		ArrayList<String> tallas = new ArrayList<>();
 		tallas.add("CH");
 		tallas.add("GR");
@@ -92,14 +123,15 @@ public class ProductoServiceImp implements ProductoService {
 		Producto producto = new Producto();
 		producto.setNombreProd("Pantalon");
 		producto.setPrecio(280.0);
-		producto.addTallaDisponible("CH");
+		producto.setTallasDisponibles(tallas);
+		producto.setMarca("GAP");
 		productoRepository.save(producto);
-
 
 		Producto rev = new Producto();
 		rev.setNombreProd("Sudadera");
-		rev.setColor(colores);
+		rev.setColor("azul");
 		rev.setPrecio(350.0);
+		rev.setMarca("nike");
 		rev.setTallasDisponibles(tallas);
 		productoRepository.save(rev);
 	}

@@ -6,37 +6,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 @Entity
 public class VentaDetalle {
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private int cantidad;
-    private double precioUnitario;
-    private double subtotal;
-    
-    @ManyToOne
-    @JoinColumn(name = "venta_id")
-    private Venta venta;
-    
-    @ManyToOne
-    @JoinColumn(name = "existencia_id")
-    private Existencia existencia;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private int cantidad;
+	private double precioUnitario;
+	private double subtotal;
+
+	@ManyToOne
+	@JoinColumn(name = "venta_id")
+	private Venta venta;
 
 	public VentaDetalle() {
 		super();
 	}
 
-	public VentaDetalle(Long id, int cantidad, double precioUnitario, double subtotal, Venta venta,
-			Existencia existencia) {
+	public VentaDetalle(Long id, int cantidad, double precioUnitario, double subtotal, Venta venta) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 		this.precioUnitario = precioUnitario;
 		this.subtotal = subtotal;
 		this.venta = venta;
-		this.existencia = existencia;
 	}
 
 	public Long getId() {
@@ -78,13 +73,5 @@ public class VentaDetalle {
 	public void setVenta(Venta venta) {
 		this.venta = venta;
 	}
-
-	public Existencia getExistencia() {
-		return existencia;
-	}
-
-	public void setExistencia(Existencia existencia) {
-		this.existencia = existencia;
-	}        
 
 }

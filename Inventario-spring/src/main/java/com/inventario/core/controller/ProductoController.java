@@ -1,6 +1,7 @@
 package com.inventario.core.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,12 +48,29 @@ public class ProductoController {
 		Producto updateProducto = productoService.saveOrProducto(producto);
 		return ResponseEntity.ok(updateProducto);
 	}
-	
 
 	@GetMapping("/existenciasByNombreAndColor")
-	public ResponseEntity<List<String>>existenciasBynombreAndColor(@RequestParam("nombreProd") String nombreProd, @RequestParam("color") String color){
-		List<String> findexistenciasBynombreAndColor = productoService.getExistenciasByNombreAndColor(nombreProd, color);
-		return ResponseEntity.ok(findexistenciasBynombreAndColor);
+	public ResponseEntity<Map<String, Object>> obtenerProductosPorNombreYColor(@RequestParam("nombreProd") String nombreProd,
+			@RequestParam("color") String color) {
+
+		Map<String, Object> productos = productoService.getExistenciasByNombreAndColor(nombreProd, color);
+		return ResponseEntity.ok(productos);
+	}
+
+	@GetMapping("/existenciasByNombreAndMarca")
+	public ResponseEntity<Map<String, Object>> obtenerProductosPorNombreYMarca(@RequestParam("nombreProd") String nombreProd,
+			@RequestParam("marca") String marca) {
+
+		Map<String, Object> productos = productoService.getExistenciasByNombreAndMarca(nombreProd, marca);
+		return ResponseEntity.ok(productos);
+	}
+	
+	@GetMapping("/existenciasByNombreAndMarcaAndColor")
+	public ResponseEntity<Map<String, Object>> obtenerProductosPorNombreYMarcayColor(@RequestParam("nombreProd") String nombreProd,
+			@RequestParam("marca") String marca,@RequestParam("color") String color) {
+
+		Map<String, Object> productos = productoService.getExistenciasByNombreAndMarcaAndColor(nombreProd, marca, color);
+		return ResponseEntity.ok(productos);
 	}
 
 	@DeleteMapping("/deleteProducts")

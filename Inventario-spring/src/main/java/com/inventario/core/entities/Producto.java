@@ -1,7 +1,6 @@
 package com.inventario.core.entities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
@@ -22,24 +21,17 @@ public class Producto {
 	private Long id;
 	private String nombreProd;
 	private double precio;
+	private String marca;
 	private LocalDate fechaCreacion;
 	private LocalDate fechaActualiz;
 	@ElementCollection
 	private List<String> tallasDisponibles;
-	@ElementCollection
-	private List<String> color;
+	private String color;
 	private byte[] imagen;
-
-	@ManyToOne
-	@JoinColumn(name = "marca_id")
-	private Marca marca;
 
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
-
-	@OneToMany(mappedBy = "producto")
-	private List<Existencia> existencias;
 
 	@OneToMany(mappedBy = "producto")
 	private List<Venta> ventas;
@@ -59,22 +51,37 @@ public class Producto {
 		super();
 	}
 
-	public Producto(Long id, String nombreProd, double precio, LocalDate fechaCreacion, LocalDate fechaActualiz,
-			List<String> tallasDisponibles, List<String> color, byte[] imagen, Marca marca, Categoria categoria,
-			List<Existencia> existencias, List<Venta> ventas) {
+	public Producto(Long id, String nombreProd, double precio, String marca, LocalDate fechaCreacion,
+			LocalDate fechaActualiz, List<String> tallasDisponibles, String color, byte[] imagen, Categoria categoria,
+			List<Venta> ventas) {
 		super();
 		this.id = id;
 		this.nombreProd = nombreProd;
 		this.precio = precio;
+		this.marca = marca;
 		this.fechaCreacion = fechaCreacion;
 		this.fechaActualiz = fechaActualiz;
 		this.tallasDisponibles = tallasDisponibles;
 		this.color = color;
 		this.imagen = imagen;
-		this.marca = marca;
 		this.categoria = categoria;
-		this.existencias = existencias;
 		this.ventas = ventas;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public Long getId() {
@@ -125,28 +132,12 @@ public class Producto {
 		this.tallasDisponibles = tallasDisponibles;
 	}
 
-	public List<String> getColor() {
-		return color;
-	}
-
-	public void setColor(List<String> color) {
-		this.color = color;
-	}
-
 	public byte[] getImagen() {
 		return imagen;
 	}
 
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
-	}
-
-	public Marca getMarca() {
-		return marca;
-	}
-
-	public void setMarca(Marca marca) {
-		this.marca = marca;
 	}
 
 	public Categoria getCategoria() {
@@ -157,27 +148,12 @@ public class Producto {
 		this.categoria = categoria;
 	}
 
-	public List<Existencia> getExistencias() {
-		return existencias;
-	}
-
-	public void setExistencias(List<Existencia> existencias) {
-		this.existencias = existencias;
-	}
-
 	public List<Venta> getVentas() {
 		return ventas;
 	}
 
 	public void setVentas(List<Venta> ventas) {
 		this.ventas = ventas;
-	}
-
-	public void addTallaDisponible(String talla) {
-		if (tallasDisponibles == null) {
-			tallasDisponibles = new ArrayList<>();
-		}
-		tallasDisponibles.add(talla);
 	}
 
 }
