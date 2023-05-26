@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inventario.core.entities.Producto;
+import com.inventario.core.entities.Producto.Categoria;
 import com.inventario.core.repositories.ProductoRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -125,6 +126,8 @@ public class ProductoServiceImp implements ProductoService {
 		producto.setPrecio(280.0);
 		producto.setTallasDisponibles(tallas);
 		producto.setMarca("GAP");
+		producto.setColor("Azul");
+		producto.setGenero(Categoria.HOMBRE);
 		productoRepository.save(producto);
 
 		Producto rev = new Producto();

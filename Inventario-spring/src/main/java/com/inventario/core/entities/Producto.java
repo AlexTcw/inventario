@@ -5,12 +5,11 @@ import java.util.List;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
@@ -29,12 +28,8 @@ public class Producto {
 	private String color;
 	private byte[] imagen;
 
-	@ManyToOne
-	@JoinColumn(name = "categoria_id")
-	private Categoria categoria;
-
-	@OneToMany(mappedBy = "producto")
-	private List<Venta> ventas;
+	@Enumerated(EnumType.STRING)
+	private Categoria genero;
 
 	@PrePersist
 	public void prePersist() {
@@ -52,8 +47,7 @@ public class Producto {
 	}
 
 	public Producto(Long id, String nombreProd, double precio, String marca, LocalDate fechaCreacion,
-			LocalDate fechaActualiz, List<String> tallasDisponibles, String color, byte[] imagen, Categoria categoria,
-			List<Venta> ventas) {
+			LocalDate fechaActualiz, List<String> tallasDisponibles, String color, byte[] imagen, Categoria genero) {
 		super();
 		this.id = id;
 		this.nombreProd = nombreProd;
@@ -64,8 +58,15 @@ public class Producto {
 		this.tallasDisponibles = tallasDisponibles;
 		this.color = color;
 		this.imagen = imagen;
-		this.categoria = categoria;
-		this.ventas = ventas;
+		this.genero = genero;
+	}
+
+	public Categoria getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Categoria genero) {
+		this.genero = genero;
 	}
 
 	public String getMarca() {
@@ -140,20 +141,8 @@ public class Producto {
 		this.imagen = imagen;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	public List<Venta> getVentas() {
-		return ventas;
-	}
-
-	public void setVentas(List<Venta> ventas) {
-		this.ventas = ventas;
+	public enum Categoria {
+		HOMBRE, MUJER
 	}
 
 }

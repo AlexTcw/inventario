@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.inventario.core.entities.Producto;
 
+@Service
 public interface ProductoService {
 
 	Producto saveOrProducto(Producto producto);
