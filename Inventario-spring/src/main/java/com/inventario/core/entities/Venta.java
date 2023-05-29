@@ -1,34 +1,39 @@
 package com.inventario.core.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
 @Entity
 public class Venta {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Date fechaVenta;
-    private double totalVenta;
-    
-    @OneToMany(mappedBy = "venta")
-    private List<VentaDetalle> ventaDetalles;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private LocalDate fechaVenta;
+	private double totalVenta;
 
+	@ManyToMany
+	@JoinTable(name = "venta_producto", joinColumns = @JoinColumn(name = "venta_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))
+	private List<Producto> productos;
+
+	// Constructor, getters y setters
 	public Venta() {
 		super();
 	}
 
-	public Venta(Long id, Date fechaVenta, double totalVenta, List<VentaDetalle> ventaDetalles) {
+	public Venta(Long id, LocalDate fechaVenta, double totalVenta, List<Producto> productos) {
 		super();
 		this.id = id;
 		this.fechaVenta = fechaVenta;
 		this.totalVenta = totalVenta;
-		this.ventaDetalles = ventaDetalles;
+		this.productos = productos;
 	}
 
 	public Long getId() {
@@ -39,11 +44,11 @@ public class Venta {
 		this.id = id;
 	}
 
-	public Date getFechaVenta() {
+	public LocalDate getFechaVenta() {
 		return fechaVenta;
 	}
 
-	public void setFechaVenta(Date fechaVenta) {
+	public void setFechaVenta(LocalDate fechaVenta) {
 		this.fechaVenta = fechaVenta;
 	}
 
@@ -55,11 +60,12 @@ public class Venta {
 		this.totalVenta = totalVenta;
 	}
 
-	public List<VentaDetalle> getVentaDetalles() {
-		return ventaDetalles;
+	public List<Producto> getProductos() {
+		return productos;
 	}
 
-	public void setVentaDetalles(List<VentaDetalle> ventaDetalles) {
-		this.ventaDetalles = ventaDetalles;
-	}        
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
+
 }

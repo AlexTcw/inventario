@@ -1,15 +1,17 @@
 package com.inventario.core.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
 public class Producto {
@@ -18,37 +20,69 @@ public class Producto {
 	private Long id;
 	private String nombreProd;
 	private double precio;
-	private Date fechaCreacion;
-	private Date fechaActualiz;
+	private String marca;
+	private LocalDate fechaCreacion;
+	private LocalDate fechaActualiz;
+	@ElementCollection
+	private List<String> tallasDisponibles;
+	private String color;
 	private byte[] imagen;
 
-	@ManyToOne
-	@JoinColumn(name = "marca_id")
-	private Marca marca;
+	@Enumerated(EnumType.STRING)
+	private Categoria genero;
 
-	@ManyToOne
-	@JoinColumn(name = "categoria_id")
-	private Categoria categoria;
+	@PrePersist
+	public void prePersist() {
+		fechaCreacion = LocalDate.now();
+		fechaActualiz = fechaCreacion;
+	}
 
-	@OneToMany(mappedBy = "producto")
-	private List<Existencia> existencias;
+	@PreUpdate
+	public void preUpdate() {
+		fechaActualiz = LocalDate.now();
+	}
 
 	public Producto() {
 		super();
 	}
 
-	public Producto(Long id, String nombreProd, double precio, Date fechaCreacion, Date fechaActualiz, byte[] imagen,
-			Marca marca, Categoria categoria, List<Existencia> existencias) {
+	public Producto(Long id, String nombreProd, double precio, String marca, LocalDate fechaCreacion,
+			LocalDate fechaActualiz, List<String> tallasDisponibles, String color, byte[] imagen, Categoria genero) {
 		super();
 		this.id = id;
 		this.nombreProd = nombreProd;
 		this.precio = precio;
+		this.marca = marca;
 		this.fechaCreacion = fechaCreacion;
 		this.fechaActualiz = fechaActualiz;
+		this.tallasDisponibles = tallasDisponibles;
+		this.color = color;
 		this.imagen = imagen;
+		this.genero = genero;
+	}
+
+	public Categoria getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Categoria genero) {
+		this.genero = genero;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
 		this.marca = marca;
-		this.categoria = categoria;
-		this.existencias = existencias;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public Long getId() {
@@ -75,20 +109,28 @@ public class Producto {
 		this.precio = precio;
 	}
 
-	public Date getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(Date fechaCreacion) {
+	public void setFechaCreacion(LocalDate fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public Date getFechaActualiz() {
+	public LocalDate getFechaActualiz() {
 		return fechaActualiz;
 	}
 
-	public void setFechaActualiz(Date fechaActualiz) {
+	public void setFechaActualiz(LocalDate fechaActualiz) {
 		this.fechaActualiz = fechaActualiz;
+	}
+
+	public List<String> getTallasDisponibles() {
+		return tallasDisponibles;
+	}
+
+	public void setTallasDisponibles(List<String> tallasDisponibles) {
+		this.tallasDisponibles = tallasDisponibles;
 	}
 
 	public byte[] getImagen() {
@@ -99,28 +141,8 @@ public class Producto {
 		this.imagen = imagen;
 	}
 
-	public Marca getMarca() {
-		return marca;
-	}
-
-	public void setMarca(Marca marca) {
-		this.marca = marca;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	public List<Existencia> getExistencias() {
-		return existencias;
-	}
-
-	public void setExistencias(List<Existencia> existencias) {
-		this.existencias = existencias;
+	public enum Categoria {
+		HOMBRE, MUJER
 	}
 
 }

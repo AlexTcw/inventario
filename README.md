@@ -1,1 +1,2 @@
-# inventario
+## inventario
+# Cosas de inventario
